@@ -8,7 +8,7 @@ describe('POST /login', () => {
             .send({ username: 'admin', password: '1234' });
 
         expect(response.statusCode).toBe(200);
-        expect(response.body.message).toBe('Login successful');
+        expect(response.body.message).toBe('Login successful! Welcome to CI/CD.');
     });
 
     it('should return 401 for invalid credentials', async () => {
