@@ -15,7 +15,8 @@ app.post('/login', (req, res) => {
     // Mock Database Check
     // Best Practice: Never store passwords in plain text in real apps! 
     if (username === 'admin' && password === '1234') {
-        res.status(200).json({ message: 'Login successful! Welcome to CI/CD.' });
+        // BUG: Accidental server error!
+        res.status(500).json({ message: 'Internal Server Error' });
     } else {
         res.status(401).json({ message: 'Invalid credentials' });
     }
