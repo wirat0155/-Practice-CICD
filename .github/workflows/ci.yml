@@ -7,13 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  quality-check:
+    name: Quality Gate (Lint & Test)
     runs-on: ubuntu-latest
-    
     defaults:
       run:
         working-directory: ./cicd
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -26,18 +25,56 @@ jobs:
     - name: Install Dependencies
       run: npm ci
 
+    - name: Run Linter
+      run: npm run lint
+
     - name: Run Tests
       run: npm test
 
+  build:
+    name: Build Artifact
+    needs: quality-check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cicd
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Create Build Artifact
+      run: |
+        # Simulate building/bundling. For Node.js, we might just exclude dev files.
+        # Here we creates a simple archive
+        mkdir build_output
+        cp -r src package.json package-lock.json build_output/
+    
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-build
+        path: ./cicd/build_output
+
   deploy:
-    needs: build-and-test
+    name: Deploy to Production
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build
+          path: ./app
+
       - name: Deploy to Render
+        working-directory: ./app
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
+          echo "Simulating deployment from built artifact..."
+          ls -la
+          
           if [ -z "$deploy_url" ]; then
             echo "::warning::RENDER_DEPLOY_HOOK_URL is not set in GitHub Secrets. Deployment skipped."
             exit 0
