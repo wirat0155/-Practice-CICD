@@ -11,6 +11,7 @@ app.get('/', (req, res) => {
 // Login Endpoint
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
+    const unusedVar = "I will cause a lint error";
 
     // Mock Database Check
     // Best Practice: Never store passwords in plain text in real apps! 
