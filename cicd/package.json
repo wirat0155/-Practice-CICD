@@ -8,6 +8,7 @@
     "test": "jest",
     "lint": "eslint src/**/*.js",
     "format": "prettier --write \"src/**/*.js\"",
+    "audit": "npm audit --production",
     "prepare": "cd .. && husky install"
   },
   "keywords": [],

@@ -28,6 +28,9 @@ jobs:
     - name: Run Linter
       run: npm run lint
 
+    - name: Security Check (Dependency Audit)
+      run: npm run audit
+
     - name: Run Tests
       run: npm test
 
