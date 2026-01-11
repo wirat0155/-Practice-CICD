@@ -11,6 +11,13 @@
     },
     "rules": {
         "no-unused-vars": "error",
-        "no-console": "warn"
+        "no-console": "warn",
+        "eqeqeq": [
+            "error",
+            "always"
+        ],
+        "curly": "error",
+        "no-var": "error",
+        "prefer-const": "error"
     }
 }
