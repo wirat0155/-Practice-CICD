@@ -1,0 +1,42 @@
+name: ASP.NET Core CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'aspnetcore/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./aspnetcore
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore -c Release
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal -c Release
+
+    - name: Publish
+      run: dotnet publish --no-build -c Release -o ./publish
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: aspnetcore-app
+        path: ./aspnetcore/publish

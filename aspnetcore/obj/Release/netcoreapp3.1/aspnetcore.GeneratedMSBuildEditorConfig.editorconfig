@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = aspnetcore
+build_property.ProjectDir = D:\demo\cicd\-Practice-CICD\aspnetcore\
